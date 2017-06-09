@@ -113,6 +113,8 @@ var response = httpClientLib.request({
 
 **HTTP request via Proxy**  
 ```js
+var httpClientLib = require('/lib/http-client');
+
 var response = httpClientLib.request({
     url: 'http://somehost/some/service',
     method: 'GET',
@@ -128,6 +130,8 @@ var response = httpClientLib.request({
 
 **Multipart POST request**  
 ```js
+var httpClientLib = require('/lib/http-client');
+
 var response = httpClientLib.request({
     url: 'http://somehost/uploadMedia',
     method: 'POST',
