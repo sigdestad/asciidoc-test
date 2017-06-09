@@ -1,5 +1,5 @@
 var assert = require('/lib/xp/assert.js');
-var http = require('/lib/xp/http-client.js');
+var http = require('/lib/http-client.js');
 
 exports.simpleGetRequest = function (mockServer) {
 

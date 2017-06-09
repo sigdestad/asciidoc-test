@@ -1,4 +1,4 @@
-var httpClientLib = require('/lib/xp/http-client');
+var httpClientLib = require('/lib/http-client');
 var assert = require('/lib/xp/assert');
 
 function getServerHost() {
@@ -8,14 +8,12 @@ function getServerHost() {
 var host = getServerHost();
 
 // BEGIN
-// request using a proxy with authentication
+// request using basic authentication
 var response = httpClientLib.request({
-    url: 'http://' + host + '/some/service',
+    url: 'http://' + host + '/protected/service',
     method: 'GET',
-    proxy: {
-        host: '172.16.0.42',
-        port: 8080,
-        user: 'admin',
+    auth: {
+        user: 'username',
         password: 'secret'
     }
 });

@@ -78,7 +78,7 @@ public class HttpRequestHandlerTest
     {
         addResponse( "GET request" );
 
-        runFunction( "/site/test/request-test.js", "simpleGetRequest", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "simpleGetRequest", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "GET", request.getMethod() );
@@ -92,7 +92,7 @@ public class HttpRequestHandlerTest
     {
         server.enqueue( addResponse( "POST request" ) );
 
-        runFunction( "/site/test/request-test.js", "simplePostRequest", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "simplePostRequest", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "POST", request.getMethod() );
@@ -106,7 +106,7 @@ public class HttpRequestHandlerTest
     {
         server.enqueue( addResponse( "GET request" ) );
 
-        runFunction( "/site/test/request-test.js", "simpleHeadRequest", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "simpleHeadRequest", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "HEAD", request.getMethod() );
@@ -120,7 +120,7 @@ public class HttpRequestHandlerTest
     {
         addResponse( "GET request" );
 
-        runFunction( "/site/test/request-test.js", "getRequestWithParams", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "getRequestWithParams", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "GET", request.getMethod() );
@@ -134,7 +134,7 @@ public class HttpRequestHandlerTest
     {
         addResponse( "POST request" );
 
-        runFunction( "/site/test/request-test.js", "postRequestWithParams", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "postRequestWithParams", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "POST", request.getMethod() );
@@ -148,7 +148,7 @@ public class HttpRequestHandlerTest
     {
         addResponse( "POST request" );
 
-        runFunction( "/site/test/request-test.js", "postJsonRequest", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "postJsonRequest", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "POST", request.getMethod() );
@@ -163,7 +163,7 @@ public class HttpRequestHandlerTest
     {
         addResponse( "GET request" );
 
-        runFunction( "/site/test/request-test.js", "getWithHeadersRequest", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "getWithHeadersRequest", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "GET", request.getMethod() );
@@ -176,7 +176,7 @@ public class HttpRequestHandlerTest
     {
         addResponseWithDelay( "GET request", 2000 );
 
-        runFunction( "/site/test/request-test.js", "getWithResponseTimeout", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "getWithResponseTimeout", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "GET", request.getMethod() );
@@ -190,7 +190,7 @@ public class HttpRequestHandlerTest
         response = response.setSocketPolicy( SocketPolicy.NO_RESPONSE );
         server.enqueue( response );
 
-        runFunction( "/site/test/request-test.js", "getWithConnectTimeout", getServerHost() );
+        runFunction( "/lib/test/request-test.js", "getWithConnectTimeout", getServerHost() );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "GET", request.getMethod() );
@@ -210,7 +210,7 @@ public class HttpRequestHandlerTest
             response.setHeader( "content-type", "text/plain" );
             proxy.enqueue( response );
 
-            runFunction( "/site/test/request-test.js", "requestWithProxy", getServerHost(), proxy.getHostName(), proxy.getPort() );
+            runFunction( "/lib/test/request-test.js", "requestWithProxy", getServerHost(), proxy.getHostName(), proxy.getPort() );
 
             final RecordedRequest proxyRequest = proxy.takeRequest();
             assertEquals( "POST", proxyRequest.getMethod() );
@@ -240,7 +240,7 @@ public class HttpRequestHandlerTest
             response.setHeader( "content-type", "text/plain" );
             proxy.enqueue( response );
 
-            runFunction( "/site/test/request-test.js", "requestWithProxyAuth", getServerHost(), proxy.getHostName(), proxy.getPort() );
+            runFunction( "/lib/test/request-test.js", "requestWithProxyAuth", getServerHost(), proxy.getHostName(), proxy.getPort() );
 
             final RecordedRequest proxyRequest = proxy.takeRequest();
             assertEquals( "POST", proxyRequest.getMethod() );
@@ -267,7 +267,7 @@ public class HttpRequestHandlerTest
         throws Exception
     {
         this.server.enqueue( addResponse( "POST request" ) );
-        runScript( "/site/lib/xp/examples/http-client/request.js" );
+        runScript( "/lib/examples/http-client/request.js" );
     }
 
     @Test
@@ -275,7 +275,7 @@ public class HttpRequestHandlerTest
         throws Exception
     {
         this.server.enqueue( addResponse( "POST request" ) );
-        runScript( "/site/lib/xp/examples/http-client/multipart.js" );
+        runScript( "/lib/examples/http-client/multipart.js" );
     }
 
     @Test
@@ -286,7 +286,7 @@ public class HttpRequestHandlerTest
         response.setResponseCode( 401 );
         response.setHeader( "WWW-Authenticate", "Basic realm=\"foo\", charset=\"UTF-8\"" );
         this.server.enqueue( response );
-        runScript( "/site/lib/xp/examples/http-client/basicauth.js" );
+        runScript( "/lib/examples/http-client/basicauth.js" );
 
         final RecordedRequest request = takeRequest();
         assertEquals( "GET", request.getMethod() );
