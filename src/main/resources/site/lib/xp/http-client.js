@@ -58,7 +58,7 @@ function checkRequired(params, name) {
  */
 exports.request = function (params) {
 
-    var bean = __.newBean('com.enonic.xp.lib.http.HttpRequestHandler');
+    var bean = __.newBean('com.enonic.lib.http.client.HttpRequestHandler');
 
     checkRequired(params, 'url');
 

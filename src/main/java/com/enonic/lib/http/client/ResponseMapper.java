@@ -1,4 +1,4 @@
-package com.enonic.xp.lib.http;
+package com.enonic.lib.http.client;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import okhttp3.Response;
 import com.enonic.xp.script.serializer.MapGenerator;
 import com.enonic.xp.script.serializer.MapSerializable;
 
-import static com.enonic.xp.lib.http.HttpRequestHandler.MAX_IN_MEMORY_BODY_STREAM_BYTES;
+import static com.enonic.lib.http.client.HttpRequestHandler.MAX_IN_MEMORY_BODY_STREAM_BYTES;
 import static org.apache.commons.lang.StringUtils.isBlank;
 
 public final class ResponseMapper
