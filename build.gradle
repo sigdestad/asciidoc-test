@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'com.enonic.defaults'
 
 repositories {
     jcenter()
@@ -9,6 +10,20 @@ repositories {
         url 'http://repo.enonic.com/public'
     }
 }
+
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url 'https://repo.enonic.com/public'
+        }
+    }
+
+    dependencies {
+        classpath 'com.enonic.gradle:gradle-defaults:1.0.1'
+    }
+}
+
 
 dependencies {
     compile "com.enonic.xp:script-api:${xpVersion}"
