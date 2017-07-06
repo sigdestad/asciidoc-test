@@ -2,7 +2,7 @@
 
 image::https://img.shields.io/badge/xp-6.+-blue.svg[role="right"]
 
-This library allows making HTTP requests to a remote server and receiving the response.
+This library allows sending HTTP requests to a remote server and receiving the response.
 
 To start using this library, add the following into your `build.gradle` file:
 
@@ -22,7 +22,7 @@ To use this library in your JavaScript code, it first needs to be required:
 var httpClient = require('/lib/http-client');
 ----
 
-To make an HTTP or HTTPS request just call the request function with the desired parameters.
+To make an HTTP or HTTPS request just call the `request` function with the desired parameters.
 
 [source,js]
 ----
@@ -76,7 +76,7 @@ The following function is defined in this library.
 === `request(options)`
 
 Sends an HTTP request and returns the response received from the remote server.
-The request is made synchronously, the execution blocks until the response is received.
+The request is made synchronously, that means the execution will block until the response is received.
 
 *Parameters*
 
