@@ -1,0 +1,181 @@
+= HTTP Client Library
+
+image::https://img.shields.io/badge/xp-6.+-blue.svg[role="right"]
+
+This library allows making HTTP requests to a remote server and receiving the response.
+
+To start using this library, add the following into your `build.gradle` file:
+
+[source,groovy]
+----
+dependencies {
+  include 'com.enonic.lib:lib-http-client:1.1.0'
+}
+----
+
+== Usage
+
+To use this library in your JavaScript code, it first needs to be required:
+
+[source,js]
+----
+var httpClient = require('/lib/http-client');
+----
+
+To make an HTTP or HTTPS request just call the request function with the desired parameters.
+
+[source,js]
+----
+var response = httpClient.request({
+    url: 'http://somehost/my/service', <1>
+    method: 'POST',                    <2>
+    headers: {
+        'Cache-Control': 'no-cache'    <3>
+    },
+    connectionTimeout: 20000,          <4>
+    readTimeout: 5000,                 <5>
+    body: '{"id": 123}',               <6>
+    contentType: 'application/json'    <7>
+});
+----
+<1> The target URL for the request. Should be a valid _http://_ or _https://_ URL.
+<2> The HTTP method, if omitted the GET method will be used.
+<3> Optional request headers can be specified.
+<4> Maximum time (ms) to wait for the connection to be established.
+<5> Maximum time (ms) to wait for the server to send back data.
+<6> The body of the HTTP request.
+<7> The content type of the request.
+
+
+The function will return an object with the properties of the HTTP response:
+
+[source,js]
+----
+response = {
+    'status': 200,               <1>
+    'message': 'OK',             <2>
+    'body': 'Response contents', <3>
+    'contentType': 'text/plain', <4>
+    'headers': {
+        'Content-Length': '17',  <5>
+        'content-type': 'text/plain'
+    }
+};
+----
+<1> HTTP status code.
+<2> HTTP status message.
+<3> Contents of the body if it's text. For binary contents see `bodyStream` property below.
+<4> Content type of the response.
+<5> Response HTTP headers.
+
+
+== API
+
+The following function is defined in this library.
+
+=== `request(options)`
+
+Sends an HTTP request and returns the response received from the remote server.
+The request is made synchronously, the execution blocks until the response is received.
+
+*Parameters*
+
+The request function takes a parameter object with options. The only mandatory option is the `url`.
+
+* `options` (_object_) Parameters to make the HTTP request.
+** `*url*` (_string_) URL to which the request is sent.
+** `*method*` (_string_) The HTTP method to use for the request (e.g. "POST", "GET", "HEAD", "PUT", "DELETE"). The default value is `"GET"`.
+** `*params*` (_object_) Query or form parameters to be sent with the request.
+** `*headers*` (_object_) HTTP headers, an object where the keys are header names and the values the header values.
+** `*connectionTimeout*` (_number_) The timeout on establishing the connection, in milliseconds. The default value is `10000`.
+** `*readTimeout*` (_number_) The timeout on waiting to receive data, in milliseconds. The default value is `10000`.
+** `*body*` (_string_ | _object_) Body content to send with the request, usually for POST or PUT requests. It can be of type string or stream.
+** `*contentType*` (_string_) Content type of the request.
+** `*multipart*` (_object[]_) Multipart form data to send with the request, an array of part objects. Each part object contains 'name', 'value', and optionally 'fileName' and 'contentType' properties. Where 'value' can be either a string or a Stream object.
+** `*auth*` (_object_) Settings for basic authentication.
+*** `*user*` (_string_) User name for basic authentication.
+*** `*password*` (_string_) Password for basic authentication.
+** `*proxy*` (_object_) Proxy settings.
+*** `*host*` (_string_) Proxy host name or IP address to use.
+*** `*port*` (_number_) Proxy port to use.
+*** `*user*` (_string_) User name for proxy authentication.
+*** `*password*` (_string_) Password for proxy authentication.
+
+
+*Returns*
+
+The function will return a `response` object with the following properties:
+
+* `*status*` (_number_) HTTP status code returned.
+* `*message*` (_string_) HTTP status message returned.
+* `*headers*` (_object_) HTTP headers of the response.
+* `*contentType*` (_string_) Content type of the response.
+* `*body*` (_string_) Body of the response as string. Null if the response content-type is not of type text.
+* `*bodyStream*` (_object_) Body of the response as a stream object.
+
+
+== Examples
+
+=== `Basic Authentication`
+[source,js]
+----
+var httpClient = require('/lib/http-client');
+
+var response = httpClient.request({
+    url: 'http://somehost/protected/service',
+    method: 'GET',
+    auth: {
+        user: 'username',
+        password: 'secret'
+    }
+});
+----
+
+
+=== `Request via Proxy`
+[source,js]
+----
+var httpClient = require('/lib/http-client');
+
+var response = httpClient.request({
+    url: 'http://somehost/some/service',
+    method: 'GET',
+    proxy: {
+        host: '172.16.0.42',
+        port: 8080,
+        user: 'admin',
+        password: 'secret'
+    }
+});
+----
+
+
+=== `Multipart POST request`
+[source,js]
+----
+var httpClient = require('/lib/http-client');
+
+var response = httpClient.request({
+    url: 'http://somehost/uploadMedia',
+    method: 'POST',
+    contentType: 'multipart/mixed',
+    multipart: [
+        {
+            name: 'media',
+            fileName: 'logo.png',
+            contentType: 'image/png',
+            value: myImageStream
+        },
+        {
+            name: 'category',
+            value: 'images'
+        }
+    ]
+});
+----
+
+
+== Compatibility
+
+This library is also a drop-in replacement for the library in Enonic XP release before 6.11.0. It can be used directly since
+it will work by using `/lib/http-client`, `/lib/xp/http-client` and `/site/lib/xp/http-client`.
