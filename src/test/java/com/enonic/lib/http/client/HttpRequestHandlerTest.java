@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteSource;
@@ -15,6 +16,8 @@ import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 
 import com.enonic.xp.testing.script.ScriptTestSupport;
+import com.enonic.xp.trace.Trace;
+import com.enonic.xp.trace.TraceManager;
 
 import static org.junit.Assert.*;
 
@@ -37,6 +40,10 @@ public class HttpRequestHandlerTest
         {
             throw new RuntimeException( e );
         }
+        final TraceManager manager = Mockito.mock( TraceManager.class );
+        final Trace trace = Mockito.mock( Trace.class );
+        Mockito.when( manager.newTrace( Mockito.any(), Mockito.any() ) ).thenReturn( trace );
+        com.enonic.xp.trace.Tracer.setManager( manager );
     }
 
     @After
