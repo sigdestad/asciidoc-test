@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.io.ByteSource;
+import com.google.common.primitives.Longs;
 
 import okhttp3.Authenticator;
 import okhttp3.Credentials;
@@ -20,6 +21,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.http.HttpMethod;
+
+import com.enonic.xp.trace.Trace;
+import com.enonic.xp.trace.Tracer;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 
@@ -62,13 +66,28 @@ public final class HttpRequestHandler
 
     private String authPassword;
 
+    private Trace trace;
+
     private final static OkHttpClient CLIENT = new OkHttpClient();
 
     @SuppressWarnings("unused")
     public ResponseMapper request()
+        throws Exception
+    {
+        startTracing();
+        if ( this.trace == null )
+        {
+            return executeRequest();
+        }
+
+        return Tracer.traceEx( trace, this::executeRequest );
+    }
+
+    private ResponseMapper executeRequest()
         throws IOException
     {
         final Response response = sendRequest( getRequest() );
+        endTracing( response );
         return new ResponseMapper( response );
     }
 
@@ -229,7 +248,8 @@ public final class HttpRequestHandler
             return;
         }
 
-        Authenticator authenticator = ( route, response ) -> {
+        Authenticator authenticator = ( route, response ) ->
+        {
             if ( authUser == null || authUser.trim().isEmpty() )
             {
                 return null;
@@ -242,7 +262,8 @@ public final class HttpRequestHandler
             return response.request().newBuilder().header( "Authorization", credential ).build();
         };
 
-        Authenticator proxyAuthenticator = ( route, response ) -> {
+        Authenticator proxyAuthenticator = ( route, response ) ->
+        {
             if ( proxyUser == null || proxyUser.trim().isEmpty() )
             {
                 return null;
@@ -262,6 +283,37 @@ public final class HttpRequestHandler
         {
             String credential = Credentials.basic( authUser, authPassword );
             request.header( "Authorization", credential ).build();
+        }
+    }
+
+    private void startTracing()
+    {
+        this.trace = Tracer.newTrace( "httpClient" );
+        if ( this.trace == null )
+        {
+            return;
+        }
+        this.trace.put( "traceName", "HttpClient" );
+        this.trace.put( "url", this.url );
+        this.trace.put( "method", this.method );
+    }
+
+    private void endTracing( final Response response )
+    {
+        if ( this.trace == null )
+        {
+            return;
+        }
+
+        if ( response != null )
+        {
+            this.trace.put( "status", response.code() );
+            this.trace.put( "type", response.header( "Content-Type" ) );
+            final Long length = Longs.tryParse( response.header( "Content-Length" ) );
+            if ( length != null )
+            {
+                this.trace.put( "size", length );
+            }
         }
     }
 
