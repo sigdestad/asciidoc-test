@@ -313,4 +313,20 @@ public class HttpRequestHandlerTest
         assertEquals( "/my/url", request.getPath() );
         assertEquals( "", request.getBody().readString( Charsets.UTF_8 ) );
     }
+
+    @Test
+    public void testSimpleGetRequestWithoutTracing()
+        throws Exception
+    {
+        com.enonic.xp.trace.Tracer.setManager( null );
+
+        addResponse( "GET request" );
+
+        runFunction( "/lib/test/request-test.js", "simpleGetRequest", getServerHost() );
+
+        final RecordedRequest request = takeRequest();
+        assertEquals( "GET", request.getMethod() );
+        assertEquals( "/my/url", request.getPath() );
+        assertEquals( "", request.getBody().readString( Charsets.UTF_8 ) );
+    }
 }
