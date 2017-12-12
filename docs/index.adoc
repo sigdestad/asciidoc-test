@@ -6,8 +6,6 @@ This library allows sending HTTP requests to a remote server and receiving the r
 
 To start using this library, add the following into your `build.gradle` file:
 
-
-image::images/kitchen.jpg[]
 image::images/secondary/bedroom.jpg[]
 audio::images/song.mp3[]
 video::images/video.mp4[]
