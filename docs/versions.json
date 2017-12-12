@@ -1,0 +1,15 @@
+[
+  {
+    "version": "1.0.1",
+    "checkout": "d786364c42a609d252ab1c0d4e8507bf07fca2f2"
+  },
+  {
+    "version": "1.0.2",
+    "checkout": "e44e03c01da4bca43298149fdd2987976f5f9985"
+  },
+  {
+    "version": "1.0.3",
+    "checkout": "9c67333b0d4cdc73a7163c777fa689665d463ad4"
+  }
+
+]
