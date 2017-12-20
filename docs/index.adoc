@@ -1,5 +1,7 @@
 = HTTP Client Library
 
+link:more.html[More!]
+
 image::https://img.shields.io/badge/xp-6.+-blue.svg[role="right"]
 
 This library allows sending HTTP requests to a remote server and receiving the response.
