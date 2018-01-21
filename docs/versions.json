@@ -1,4 +1,5 @@
-[
+{
+  "versions": [
   {
     "label": "1.0.1",
     "checkout": "d786364c42a609d252ab1c0d4e8507bf07fca2f2"
@@ -13,3 +14,4 @@
   }
 
 ]
+}
